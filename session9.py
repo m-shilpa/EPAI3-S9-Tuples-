@@ -56,6 +56,8 @@ def largest_blood_group(profiles, dtype):
                 major = i
                     
         return major
+    else:
+        return "No profiles available"
 
 
 def get_oldest_person_age(profiles,dtype):
@@ -75,6 +77,8 @@ def get_oldest_person_age(profiles,dtype):
                 if i['age'] >m:
                     m=i['age']
             return m
+    else:
+        return "No profiles available"
 
 def get_averge_age(profiles,dtype):
 	""" Function to get the average age of all the people in the given list of profiles. """
@@ -90,7 +94,9 @@ def get_averge_age(profiles,dtype):
             for i in profiles:
                 m+=i['age']
             return m/len(profiles)
-
+    else:
+        return "No profiles available"
+		
 def get_mean_current_location(profiles,dtype):
 	""" Function to ge the mean current location. """
 	
@@ -113,7 +119,9 @@ def get_mean_current_location(profiles,dtype):
                 y_tot+= i['current_location'][1]
 
             return x_tot/len(profiles), y_tot/len(profiles)
-		
+    else:
+        return "No profiles available"
+
 def prove_namedtuple_faster():
 	""" function to prove that namedtuple executes faster than dictionary. """
 	
