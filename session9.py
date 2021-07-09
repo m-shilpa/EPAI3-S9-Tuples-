@@ -4,7 +4,7 @@ from collections import namedtuple
 from time import perf_counter
 
 def check_length_0(input_list):
-	""" Check if the length of list is empty or not """
+    """ Check if the length of list is empty or not """
 	
     if len(input_list) > 0:
 		return True
@@ -13,7 +13,7 @@ def check_length_0(input_list):
 
 def fetch_profiles(num_profiles, dtype):
 	
-	""" create a list of fake profiles by using the Faker module and returns this list. """
+    """ create a list of fake profiles by using the Faker module and returns this list. """
 	
     data_desc = ['job', 'company', 'ssn', 'residence', 'current_location', 'blood_group', 'website', 'username', 'name', 'sex', 'address', 'mail', 'birthdate','age'] 
     profiles = []
@@ -37,7 +37,7 @@ def fetch_profiles(num_profiles, dtype):
     return profiles
 
 def largest_blood_group(profiles, dtype):
-	""" Function to get the largest blood group type """
+    """ Function to get the largest blood group type """
 	
     if check_length_0(profiles):
 
@@ -61,7 +61,7 @@ def largest_blood_group(profiles, dtype):
 
 
 def get_oldest_person_age(profiles,dtype):
-	""" Function to get the age of the oldest person in days. """
+    """ Function to get the age of the oldest person in days. """
 	
     if check_length_0(profiles):
         
@@ -81,7 +81,7 @@ def get_oldest_person_age(profiles,dtype):
         return "No profiles available"
 
 def get_averge_age(profiles,dtype):
-	""" Function to get the average age of all the people in the given list of profiles. """
+    """ Function to get the average age of all the people in the given list of profiles. """
 	
     if check_length_0(profiles):
         if dtype == 'namedtuple':
@@ -98,7 +98,7 @@ def get_averge_age(profiles,dtype):
         return "No profiles available"
 		
 def get_mean_current_location(profiles,dtype):
-	""" Function to ge the mean current location. """
+    """ Function to ge the mean current location. """
 	
     if check_length_0(profiles):
         if dtype == 'namedtuple':
@@ -123,7 +123,7 @@ def get_mean_current_location(profiles,dtype):
         return "No profiles available"
 
 def prove_namedtuple_faster():
-	""" function to prove that namedtuple executes faster than dictionary. """
+    """ Function to prove that namedtuple executes faster than dictionary. """
 	
     profiles = fetch_profiles(num_profiles=10,dtype='dict')
     s = perf_counter()
