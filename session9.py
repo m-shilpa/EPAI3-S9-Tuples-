@@ -1,63 +1,131 @@
-from functools import wraps
-from datetime import datetime,timezone
+from datetime import date
+from faker import Faker
+from collections import namedtuple
 from time import perf_counter
 
-# Decorator that allows to run a function only at odd seconds, else prints out "We're even!"
-def odd_it(fn: "Function"):
-	''' Function that allows a function to run at odd seconds'''
-	@wraps(fn)
-	def inner(*args, **kwargs):
-		''' Decorator that allows a function to run at odd seconds else prints 'We're even '''
-		sec = datetime.now().second
-		if sec %2 == 0:
-			print("We're even!")
-		else:
-	      		return fn(*args,**kwargs)
-	return inner
-
-# The same logger that we coded in the class
-# it will be tested against a function that will be sent 2 parameters, and 
-# it would return some random string. 
-def logger(fn: "Function"):
+def check_length_0(input_list):
+	""" Check if the length of list is empty or not """
 	
-	''' A logger function that gives the details of the function and it's logs'''
+    if len(input_list) > 0:
+        return True
+    else:
+        return False
 
-	@wraps(fn)
-	def inner(*args, **kwargs):
-		''' Decorator that gives details such as the function description, it's arguments, when the function was called and it's execution time '''
+def fetch_profiles(num_profiles, dtype):
+	
+	""" create a list of fake profiles by using the Faker module and returns this list. """
+	
+    data_desc = ['job', 'company', 'ssn', 'residence', 'current_location', 'blood_group', 'website', 'username', 'name', 'sex', 'address', 'mail', 'birthdate','age'] 
+    profiles = []
+    fake = Faker()
+    Faker.seed(0)
 
-		exec_start = datetime.now(timezone.utc)
-		result = fn(*args,**kwargs)
-		exec_end = datetime.now(timezone.utc)
-		print(f'Function: {fn.__name__} ')
-		print("Function description")
-		print(f"This is a function's writeup : {fn.__doc__}")
-		print(f'Function annotation : {fn.__annotations__}')
-		print(f'{fn.__name__} called at {exec_start}')       
-		print(f'Execution time of {fn.__name__} : {exec_end - exec_start}')
+    if dtype == 'namedtuple':
+        Data = namedtuple('Data', data_desc)
+        Data.__doc__ = "Contains the person's profile "
+        for _ in range(num_profiles):
+            p = fake.profile()
+            p['age'] = (date.today() - p['birthdate']).days
+            profiles.append(Data(**p))
 
-		return result
-	return inner
+    elif dtype == 'dict':
+        for _ in range(num_profiles):
+            p = fake.profile()
+            p['age'] = (date.today() - p['birthdate']).days
+            profiles.append(p)
+
+    return profiles
+
+def largest_blood_group(profiles, dtype):
+	""" Function to get the largest blood group type """
+	
+    if check_length_0(profiles):
+
+        if dtype == 'namedtuple': 
+            blood_groups = [i.blood_group for i in profiles ]
+        elif dtype == 'dict':
+            blood_groups = [i['blood_group'] for i in profiles ]
+        else:
+            return
+
+        m = 0
+        for i in set(blood_groups):
+            x = blood_groups.count(i)
+            if x>=m:
+                m=x
+                major = i
+                    
+        return major
 
 
+def get_oldest_person_age(profiles,dtype):
+	""" Function to get the age of the oldest person in days. """
+	
+    if check_length_0(profiles):
+        
+        if dtype == 'namedtuple': 
+            m = 0
+            for i in profiles:
+                if i.age >m:
+                    m=i.age
+            return m
+        elif dtype == 'dict': 
+            m = 0
+            for i in profiles:
+                if i['age'] >m:
+                    m=i['age']
+            return m
 
-# start with a decorator_factory that takes an argument one of these strings, 
-# high, mid, low or no
-# then write the decorator that has 4 free variables
-# based on the argument set by the factory call, give access to 4, 3, 2 or 1 arguments
-# to the function being decorated from var1, var2, var3, var4
-# YOU CAN ONLY REPLACE "#potentially missing code" LINES WITH MULTIPLE LINES BELOW
-# KEEP THE REST OF THE CODE SAME
-def decorator_factory(access:str):
-	pass
+def get_averge_age(profiles,dtype):
+	""" Function to get the average age of all the people in the given list of profiles. """
+	
+    if check_length_0(profiles):
+        if dtype == 'namedtuple':
+            m = 0
+            for i in profiles:
+                m+=i.age
+            return m/len(profiles)
+        elif dtype == 'dict':
+            m = 0
+            for i in profiles:
+                m+=i['age']
+            return m/len(profiles)
 
+def get_mean_current_location(profiles,dtype):
+	""" Function to ge the mean current location. """
+	
+    if check_length_0(profiles):
+        if dtype == 'namedtuple':
+            x_tot = 0
+            y_tot = 0
+            a = []
+            for i in profiles:
+                x_tot+= i.current_location[0]
+                y_tot+= i.current_location[1]
 
-# The authenticate function. Start with a dec_factory that sets the password. It's inner
-# will not be called with "password", *args, **kwargs on the fn
-def authenticate(set_password):
-	pass
+            return x_tot/len(profiles), y_tot/len(profiles)
+        elif dtype == 'dict':
+            x_tot = 0
+            y_tot = 0
+            a = []
+            for i in profiles:
+                x_tot+= i['current_location'][0]
+                y_tot+= i['current_location'][1]
 
-
-# The timing function
-def timed(reps):
-    pass
+            return x_tot/len(profiles), y_tot/len(profiles)
+		
+def prove_namedtuple_faster():
+	""" function to prove that namedtuple executes faster than dictionary. """
+	
+    profiles = fetch_profiles(num_profiles=10,dtype='dict')
+    s = perf_counter()
+    print(get_mean_current_location(profiles,dtype='dict'))  
+    e = perf_counter()
+    print('Time taken by dictionary',e-s)
+    profiles = fetch_profiles(num_profiles=10,dtype='namedtuple')
+    s = perf_counter()
+    print(largest_blood_group(profiles,dtype='namedtuple'))
+    e = perf_counter()
+    print('Time taken by namedtuple',e-s)
+	
+	
