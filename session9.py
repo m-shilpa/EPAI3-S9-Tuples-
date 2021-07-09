@@ -7,7 +7,7 @@ def check_length_0(input_list):
     """ Check if the length of list is empty or not """
 	
     if len(input_list) > 0:
-		return True
+        return True
     else:
         return False
 
