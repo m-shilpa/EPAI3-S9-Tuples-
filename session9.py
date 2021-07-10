@@ -122,18 +122,21 @@ def get_mean_current_location(profiles,dtype):
     else:
         return "No profiles available"
 
-def prove_namedtuple_faster():
+def prove_namedtuple_faster(func1):
     """ Function to prove that namedtuple executes faster than dictionary. """
 	
-    profiles = fetch_profiles(num_profiles=10,dtype='dict')
+    profiles = fetch_profiles(num_profiles=10000,dtype='dict')
     s = perf_counter()
-    print(get_mean_current_location(profiles,dtype='dict'))  
+    mcl = func1(profiles,dtype='dict') 
     e = perf_counter()
-    print('Time taken by dictionary',e-s)
-    profiles = fetch_profiles(num_profiles=10,dtype='namedtuple')
+    dict_time = e-s
+    print('Time taken by dictionary',dict_time)
+    profiles = fetch_profiles(num_profiles=10000,dtype='namedtuple')
     s = perf_counter()
-    print(largest_blood_group(profiles,dtype='namedtuple'))
+    mcl = func1(profiles,dtype='namedtuple')
     e = perf_counter()
-    print('Time taken by namedtuple',e-s)
+    tuple_time = e-s
+    print('Time taken by namedtuple',tuple_time)
+    return dict_time, tuple_time
 	
 	
