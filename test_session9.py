@@ -55,7 +55,7 @@ def test_readme_file_for_formatting():
 def test_indentations():
     ''' Returns pass if used four spaces for each level of syntactically \
     significant indenting.'''
-    lines = inspect.getsource(session4)
+    lines = inspect.getsource(session9)
     spaces = re.findall('\n +.', lines)
     for space in spaces:
         assert len(space) % 4 == 2, "Your script contains misplaced indentations"
