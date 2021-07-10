@@ -8,22 +8,12 @@ import inspect
 import os
 
 README_CONTENT_CHECK_FOR = [
-    "and",
-    "or",
-    "repr",
-    "str",
-    "add",
-    "eq",
-    "float",
-    "ge",
-    "gt",
-    "invert",
-    "le",
-    "lt",
-    "mul",
-    "sqrt",
-    "bool",
-    "init"
+    "fetch_profiles",
+    "largest_blood_group",
+    "get_oldest_person_age",
+    "get_averge_age",
+    "get_mean_current_location",
+    "prove_namedtuple_faster",
 ]
 
 def test_readme_exists():
