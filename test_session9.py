@@ -81,3 +81,9 @@ def test_get_averge_age():
     output = get_averge_age(profiles,dtype='namedtuple')
     print(output)
     assert any(["No profiles available" in output])
+    
+def test_prove_namedtuple_faster():
+    dict_time, tuple_time = prove_namedtuple_faster(get_oldest_person_age)
+    assert dict_time > tuple_time, "Dictionary faster than Named Tuple"
+    
+    
